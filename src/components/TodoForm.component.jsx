@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   Input,
   Center,
@@ -6,62 +6,63 @@ import {
   FormControl,
   FormLabel,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import TodoList from "./TodoList.component";
 
-export default class TodoForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todo: "",
-      list: [],
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+export default function TodoForm(props) {
+  const [todo, setTodo] = useState("");
+  const [list, setList] = useState([]);
+
+  function handleChange(event) {
+    setTodo(event.target.value);
   }
 
-  handleChange(event) {
-    this.setState({ todo: event.target.value });
-  }
-
-  handleSubmit(event) {
-    console.log("hi");
+  function handleSubmit(event) {
     event.preventDefault();
-    if (this.state.todo !== "") {
-      const list = [...this.state.list];
+    if (todo !== "") {
       const data = {
         id: Math.random(),
-        info: this.state.todo,
+        info: todo,
       };
       list.push(data);
-      this.setState({ list, todo: "" });
+      setTodo("");
     }
   }
 
-  render() {
-    return (
-      <Center py="31.42vh">
-        <Container bg="#ffcdb2" borderRadius="10px">
-          <FormControl as="form" p="5" onSubmit={this.handleSubmit}>
-            <FormLabel as="legend" htmlFor="todo">
-              What do you want to do?
-            </FormLabel>
-            <Input
-              id="todo"
-              type="text"
-              value={this.state.todo}
-              onChange={this.handleChange}
-            />
-            <Button type="submit" my="4" color="white" bg="#ef233c">
-              Add
-            </Button>
-          </FormControl>
-          {this.state.list.map((item) => {
-            return <div key={item.id}>{item.info}</div>;
-          })}
-        </Container>
-        <TodoList todo={this.state.list} />
-      </Center>
-    );
-  }
+  const toast = useToast();
+
+  return (
+    <Center py="31.42vh">
+      <Container bg="#ffcdb2" borderRadius="10px">
+        <FormControl as="form" p="5" onSubmit={handleSubmit}>
+          <FormLabel as="legend" htmlFor="todo">
+            What do you want to do?
+          </FormLabel>
+          <Input id="todo" type="text" value={todo} onChange={handleChange} />
+          <Button
+            type="submit"
+            my="4"
+            color="white"
+            bg="#ef233c"
+            onClick={() =>
+              toast({
+                title: "Added!",
+                description: "We've added to your list.",
+                status: "success",
+                duration: 1000,
+                isClosable: true,
+              })
+            }
+          >
+            Add
+          </Button>
+        </FormControl>
+        {/* {this.state.list.map((item) => {
+          return <div key={item.id}>{item.info}</div>;
+        })} */}
+      </Container>
+      <TodoList list={list} />
+    </Center>
+  );
 }

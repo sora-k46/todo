@@ -12,16 +12,16 @@ export default function Footer() {
         </Box>
         <Box>
           <Box>
-            <Link>Facebook</Link>
+            <Link href="https://www.facebook.com" target="_blank">Facebook</Link>
           </Box>
           <Box>
-            <Link>Instagram</Link>
+            <Link href="https://www.instagram.com" target="_blank">Instagram</Link>
           </Box>
           <Box>
-            <Link>Twitter</Link>
+            <Link href="https://www.twitter.com" target="_blank">Twitter</Link>
           </Box>
           <Box>
-            <Link>Youtube</Link>
+            <Link href="https://www.youtube.com" target="_blank">Youtube</Link>
           </Box>
         </Box>
       </Flex>
